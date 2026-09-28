@@ -1,0 +1,27 @@
+{
+  "title": "内部协同",
+  "passwordSha256": "3794ca085283d3067872369a4b9b121ad50bf3377a4fed0cd1b8a1bc0164c574",
+  "hint": "内部入口 · 模板默认密码 hq2026，部署后请务必修改（方法见 README「改密码」）",
+  "notionUrl": "https://www.notion.so/",
+  "notionName": "Notion 工作台（发起端总台）",
+  "links": [
+    {
+      "name": "客户视图模板（进度 / 交付 / 数据表现）",
+      "url": "https://www.notion.so/",
+      "note": "每个客户复制一个视图：筛选 clientKey、隐藏分佣/节点/成本列后发布链接。操作步骤见 README「怎么给客户发链接」。",
+      "role": "client"
+    },
+    {
+      "name": "节点视图模板（可认领 / 我的项目 / 我的分佣）",
+      "url": "https://www.notion.so/",
+      "note": "每个节点复制一个视图：筛选 nodeKey、隐藏成本与他人分佣后发布链接。操作步骤见 README「怎么给节点开权限」。",
+      "role": "node"
+    },
+    {
+      "name": "发起端总台（全量台账：项目 / 节点 / 分佣 / 结算）",
+      "url": "https://www.notion.so/",
+      "note": "全量数据仅自己可见，不对外分享。三本台账的字段结构与 content/ops/ 一一对应。",
+      "role": "owner"
+    }
+  ]
+}

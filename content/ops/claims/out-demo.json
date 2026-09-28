@@ -1,0 +1,16 @@
+{
+  "direction": "outbound",
+  "claimId": "out-demo",
+  "projectId": "02-example-b",
+  "projectName": "示例项目B · 获客工具开发",
+  "nodeApiUrl": "https://your-domain.com/api/network/projects",
+  "claimerName": "张三",
+  "claimerSite": "https://your-domain.com",
+  "contact": "zhangsan@example.com",
+  "message": "占位演示：本站认领联盟节点开放的工具项目。",
+  "status": "pending",
+  "remoteStatus": "claimed",
+  "progress": "",
+  "claimedAt": "2026-09-28T10:00:00.000Z",
+  "lastSyncedAt": "2026-09-28T18:47:00.813Z"
+}

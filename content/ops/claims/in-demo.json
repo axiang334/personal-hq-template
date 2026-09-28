@@ -1,0 +1,12 @@
+{
+  "direction": "incoming",
+  "claimId": "in-demo",
+  "projectId": "02-example-b",
+  "projectName": "示例项目B · 获客工具开发",
+  "claimerName": "示例节点",
+  "claimerSite": "https://example-node.com",
+  "contact": "node@example.com",
+  "message": "占位演示：我想认领这个工具项目的开发。",
+  "status": "pending",
+  "receivedAt": "2026-09-28T09:00:00.000Z"
+}

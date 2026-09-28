@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>张三 · 项目发起人 / 独立开发者</title>
+    <meta name="description" content="张三的个人数字总部（示例站）：项目发起人、独立开发者。项目池、协作网络、作品、长文与联系方式。" />
+    <meta name="theme-color" content="#131312" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="llms" href="/llms.txt" />
+    <!-- 初始主题：避免刷新时闪烁，可被 localStorage 或系统偏好覆盖 -->
+    <script>
+      ;(function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+          document.documentElement.classList.toggle('dark', dark)
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

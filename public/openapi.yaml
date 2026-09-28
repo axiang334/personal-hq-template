@@ -1,0 +1,621 @@
+openapi: 3.1.0
+info:
+  title: Personal Digital HQ API
+  version: 0.1.0
+  summary: 个人数字总部的只读接口
+    description: |
+      个人数字总部模板（示例站）的只读 API。所有数据由站点仓库中的
+      `src/data/*.json` 驱动，本接口是其只读视图，供数字分身、
+      外部展示或其他集成使用。
+
+      联邦协作原则：**认领即连接，未认领不产生数据绑定**——
+      浏览与拉取（GET）只是读取展示；只有 POST /api/network/claim 才在双方之间
+      建立项目绑定；此后仅对已认领项目通过状态端点同步进度。
+
+      除认领写入接口外均为只读；全部接口开放 CORS、无认证、无速率限制承诺。
+servers:
+  - url: https://your-domain.com
+    description: 生产环境（替换为你的域名）
+  - url: http://localhost:4173
+    description: 本地（node server.mjs）
+
+tags:
+  - name: profile
+    description: 个人资料
+  - name: works
+    description: 作品列表
+  - name: videos
+    description: 视频列表
+  - name: network
+    description: 协作网络成员
+  - name: projects
+    description: 开放项目池（联盟标准结构，供跨站拉取与认领）
+
+paths:
+  /api/profile:
+    get:
+      tags: [profile]
+      operationId: getProfile
+      summary: 获取个人资料
+      description: 返回身份卡片所需的全部资料：姓名、定位、标签、当前状态、社交链接等。
+      responses:
+        "200":
+          description: 个人资料
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+              example:
+                siteUrl: https://your-domain.com
+                name: 张三
+                nameEn: Zhang San
+                avatar: /uploads/avatar.svg
+                jobTitle: 项目发起人 / 独立开发者
+                tagline: 我发起真实商业项目，连接独立节点，按结果分佣，共同交付。（示例文案）
+                tags: [项目管理, 业务操盘, 内容营销, 独立开发, 协作网络]
+                status:
+                  available: true
+                  availableText: 开放项目认领与合作
+                  text: 正在搭建协作网络，同时招募新节点（示例状态）
+                location: 中国 · 线上协作
+                email: zhangsan@example.com
+                socials:
+                  - name: GitHub
+                    url: https://github.com/your-github
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/works:
+    get:
+      tags: [works]
+      operationId: listWorks
+      summary: 获取作品列表
+      description: 返回全部作品，按创建时间倒序。`status` 含义：live（已上线）、wip（进行中）、maintained（维护中）、archived（已归档）。
+      responses:
+        "200":
+          description: 作品列表
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorksResponse"
+              example:
+                count: 2
+                items:
+                  - slug: example-brand-a
+                    title: 示例作品A · 品牌短视频获客体系
+                    summary: 为示例客户A搭建短视频获客体系：内容方向、账号矩阵、投放策略与线索承接链路。
+                    category: 业务案例
+                    year: "2026"
+                    status: delivered
+                    statusText: 已交付
+                    stack: [短视频获客, 投放策略, 线索承接]
+                    highlight: true
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/videos:
+    get:
+      tags: [videos]
+      operationId: listVideos
+      summary: 获取视频列表
+      description: 返回全部视频，按发布时间倒序。`platform` 含义：bilibili（B 站嵌入）、youtube（YouTube 嵌入）、direct（本站媒体库直传，字段 `file` 为文件地址）。
+      responses:
+        "200":
+          description: 视频列表
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideosResponse"
+              example:
+                count: 2
+                items:
+                  - slug: example-talk-network
+                    title: 示例视频A · 一次协作网络的复盘分享
+                    summary: 复盘一个从发起到交付的完整协作项目：项目怎么拆、节点怎么认领、结果怎么验收。
+                    date: "2026-08-15"
+                    platform: bilibili
+                    url: ""
+                    cover: /uploads/video-longform.svg
+                    duration: "—"
+                    tags: [协作网络, 复盘]
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/network:
+    get:
+      tags: [network]
+      operationId: listNetwork
+      summary: 获取协作网络成员
+      description: |
+        返回结果导向协作网络的全部节点（成员），按文件名顺序（即展示顺序）。
+        `claim` 字段是成员可认领的交付方向，代理匹配需求时应优先参考该字段。
+      responses:
+        "200":
+          description: 成员列表
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NetworkResponse"
+              example:
+                count: 1
+                items:
+                  - slug: example-node
+                    name: 示例节点
+                    role: 独立开发者 · 全栈与自动化
+                    tags: [全栈开发, 自动化, 小程序]
+                    siteName: 示例节点的独立站
+                    siteUrl: https://example-node.com
+                    avatar: /uploads/member-a.svg
+                    bio: 联盟演示节点（占位资料，替换为真实成员）。
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/network/projects:
+    get:
+      tags: [projects]
+      operationId: listNetworkProjects
+      summary: 获取开放项目（联盟标准结构）
+      description: |
+        联邦协作网络的**项目开放接口**：返回本站开放给联盟的全部项目，
+        输出联盟通用项目结构（projectId / projectName / need / reward / status / publisher / claimUrl 必返，
+        maturity / baseline / criteria / tags 等为可选扩展）。
+
+        - 已开放 CORS（Access-Control-Allow-Origin: *），任何联盟节点的前端可直接跨站拉取
+        - status 枚举：open（可认领）/ delivered（已交付）
+        - **拉取只是浏览，不产生任何同步**；建立绑定请走 POST /api/network/claim
+        - claimUrl 是给人看的认领入口；机器认领直接 POST /api/network/claim（携带 projectId）
+      responses:
+        "200":
+          description: 开放项目列表（联盟标准结构）
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectsResponse"
+              example:
+                count: 2
+                items:
+                  - projectId: 02-example-b
+                    projectName: 示例项目B · 获客工具开发
+                    need: 需要交付：1 套可用的获客工具前端（小程序或 H5），以及首批种子商户的试点反馈。
+                    reward: 基础开发费 + 成交商户分佣（按月结算，比例面谈）
+                    status: open
+                    publisher: 张三
+                    claimUrl: https://your-domain.com/projects#02-example-b
+                    maturity: 模式已跑通 0-1：工具原型验证完成，待节点认领开发
+                    criteria: 合格线：工具上线可稳定使用，试点商户触达与留资数据达标。
+                    tags: [工具开发, 获客, 招募中]
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/network/claim:
+    post:
+      tags: [projects]
+      operationId: claimNetworkProject
+      summary: 认领项目（认领即连接）
+      description: |
+        联邦认领入口。任何节点的访客点击「认领」后，由**认领方前端**调用本接口，
+        携带项目 ID、认领方节点信息与联系方式；本站接收后把认领落盘到内部台账
+        （content/ops/claims/，后台可见「该项目已被谁认领」），并返回确认。
+        只有这一步会让双方数据产生连接——浏览、拉取都不会。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClaimRequest"
+            example:
+              projectId: 02-example-b
+              projectName: 示例项目B · 获客工具开发
+              claimer:
+                name: 示例节点
+                site: https://example-node.com
+              contact: node@example.com
+              message: 我想认领这个工具项目的开发。
+      responses:
+        "200":
+          description: 认领已接收
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, claimId, status]
+                properties:
+                  ok:
+                    type: boolean
+                  claimId:
+                    type: string
+                    description: 认领记录 ID（in- 前缀 = 收到的认领）
+                  status:
+                    type: string
+                    enum: [received]
+                  persisted:
+                    type: boolean
+                    description: 是否已落盘（node 通道 true；Vercel / EdgeOne 静态通道降级为 false）
+        "400":
+          description: 缺少必填字段（projectId / claimer.name）
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/network/projects/{projectId}/status:
+    get:
+      tags: [projects]
+      operationId: getNetworkProjectStatus
+      summary: 查询项目认领状态（已认领项目的轮询同步端点）
+      description: |
+        供认领方定时轮询，同步该项目在发布方的认领状态与进度。
+        只返回认领状态、认领方名称与进度，不暴露联系方式等隐私。
+        认领方侧只对「我已认领」的项目轮询本端点——未被认领的项目不进入任何一方台账。
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 项目 ID（slug）
+      responses:
+        "200":
+          description: 项目状态
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectStatus"
+              example:
+                projectId: 02-example-b
+                projectName: 示例项目B · 获客工具开发
+                status: claimed
+                claimedBy: 示例节点
+                claimedAt: "2026-09-29T02:50:00.000Z"
+                progress: ""
+                updatedAt: "2026-09-29T03:00:00.000Z"
+        "404":
+          description: 项目不存在
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  responses:
+    ServerError:
+      description: 服务器内部错误
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  schemas:
+    Profile:
+      type: object
+      required: [name, jobTitle, tagline, tags, status]
+      properties:
+        siteUrl:
+          type: string
+          format: uri
+          description: 站点正式域名
+        name:
+          type: string
+          description: 姓名
+        nameEn:
+          type: string
+          description: 拼音 / 英文名
+        avatar:
+          type: string
+          description: 头像地址（站点相对路径）
+        jobTitle:
+          type: string
+          description: 职业身份
+        tagline:
+          type: string
+          description: 一句话定位
+        bio:
+          type: string
+          description: 完整自我介绍（Markdown 纯文本）
+        tags:
+          type: array
+          items:
+            type: string
+          description: 身份标签（3-5 个）
+        status:
+          type: object
+          required: [text]
+          properties:
+            available:
+              type: boolean
+              description: 是否可接受合作
+            availableText:
+              type: string
+              description: 可合作状态的展示文案
+            text:
+              type: string
+              description: 当前正在做什么
+        location:
+          type: string
+        email:
+          type: string
+          format: email
+        socials:
+          type: array
+          items:
+            $ref: "#/components/schemas/SocialLink"
+
+    SocialLink:
+      type: object
+      required: [name, url]
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+
+    Work:
+      type: object
+      required: [slug, title, summary, category, year, status, statusText, stack]
+      properties:
+        slug:
+          type: string
+          description: 稳定标识，同时是 /works 页锚点
+        title:
+          type: string
+        summary:
+          type: string
+        category:
+          type: string
+          description: 如「独立产品」「开源项目」
+        year:
+          type: string
+        status:
+          type: string
+          enum: [live, wip, maintained, archived]
+        statusText:
+          type: string
+          description: 状态的中文展示文案
+        stack:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+          description: 产品地址（可缺省）
+        repo:
+          type: string
+          format: uri
+          description: 源码地址（可缺省）
+        highlight:
+          type: boolean
+          description: 是否精选
+
+    WorksResponse:
+      type: object
+      required: [count, items]
+      properties:
+        count:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Work"
+
+    Video:
+      type: object
+      required: [slug, title, date, platform, summary]
+      properties:
+        slug:
+          type: string
+          description: 稳定标识，同时是 /videos 页锚点
+        title:
+          type: string
+        date:
+          type: string
+          format: date
+        summary:
+          type: string
+        platform:
+          type: string
+          enum: [bilibili, youtube, direct]
+          description: direct 表示本站媒体库直传的视频文件
+        url:
+          type: string
+          format: uri
+          description: 外链视频地址（bilibili / youtube）
+        file:
+          type: string
+          description: 本站视频文件地址（platform 为 direct 时）
+        cover:
+          type: string
+          description: 封面图地址
+        duration:
+          type: string
+          description: 时长（mm:ss）
+        tags:
+          type: array
+          items:
+            type: string
+
+    VideosResponse:
+      type: object
+      required: [count, items]
+      properties:
+        count:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Video"
+
+    Member:
+      type: object
+      required: [slug, name, siteUrl]
+      properties:
+        slug:
+          type: string
+          description: 稳定标识
+        name:
+          type: string
+        role:
+          type: string
+          description: 成员定位
+        tags:
+          type: array
+          items:
+            type: string
+        siteName:
+          type: string
+          description: 个人独立站名称
+        siteUrl:
+          type: string
+          format: uri
+          description: 个人独立站地址
+        avatar:
+          type: string
+          description: 头像地址（站点相对路径）
+        bio:
+          type: string
+        claim:
+          type: string
+          description: 可认领的交付方向，如「可认领：工具类项目的开发与上线」
+        apiUrl:
+          type: string
+          format: uri
+          description: |
+            该节点的开放项目接口（GET，返回联盟标准项目结构）。
+            联邦协作：用前端直接请求此地址即可拉取对方开放的项目。
+            缺省或为空表示该节点未开放接口。
+
+    NetworkResponse:
+      type: object
+      required: [count, items]
+      properties:
+        count:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Member"
+
+    Project:
+      type: object
+      description: |
+        联盟通用项目结构（联邦协议 wire format）。任何部署了本站结构的节点
+        都通过 GET /api/network/projects 输出此结构，供其他节点跨站浏览。
+        注意：拉取只是浏览，不产生数据绑定；认领走 POST /api/network/claim。
+      required: [projectId, projectName, need, reward, status, publisher, claimUrl]
+      properties:
+        projectId:
+          type: string
+          description: 项目 ID（稳定标识；认领时必传）
+        projectName:
+          type: string
+          description: 项目名
+        need:
+          type: string
+          description: 需要交付的结果（结果导向，匹配与验收的核心字段）
+        reward:
+          type: string
+          description: 分佣机制，如「基础费 + 结果提成」
+        status:
+          type: string
+          enum: [open, delivered]
+          description: open = 可认领，delivered = 已交付
+        publisher:
+          type: string
+          description: 项目发布人
+        claimUrl:
+          type: string
+          format: uri
+          description: 认领入口（展示用）；机器认领走 POST /api/network/claim
+        maturity:
+          type: string
+          description: （可选扩展）项目成熟度——已跑通 0-1 / 已完成 0-100 复制
+        baseline:
+          type: string
+          description: （可选扩展）已跑通的基线路径（SOP 参考）
+        criteria:
+          type: string
+          description: （可选扩展）评判标准——合格验收口径
+        tags:
+          type: array
+          items:
+            type: string
+          description: （可选扩展）标签
+        summary:
+          type: string
+          description: （可选扩展）项目背景说明
+        date:
+          type: string
+          format: date
+          description: （可选扩展）发布/更新日期
+
+    ClaimRequest:
+      type: object
+      required: [projectId, claimer, contact]
+      description: 认领请求体——认领方点击「认领」时由其前端发送给项目发布方
+      properties:
+        projectId:
+          type: string
+          description: 要认领的项目 ID
+        projectName:
+          type: string
+          description: 项目名（冗余，便于双方台账记录）
+        claimer:
+          type: object
+          required: [name]
+          properties:
+            name:
+              type: string
+              description: 认领方节点名称
+            site:
+              type: string
+              format: uri
+              description: 认领方站点地址
+        contact:
+          type: string
+          description: 认领方联系方式（邮箱等）
+        message:
+          type: string
+          description: 认领说明（可选）
+
+    ProjectStatus:
+      type: object
+      required: [projectId, status]
+      description: 项目认领状态（轮询同步端点响应；不含联系方式等隐私）
+      properties:
+        projectId:
+          type: string
+        projectName:
+          type: string
+        status:
+          type: string
+          enum: [open, claimed, delivered]
+          description: open = 未被认领，claimed = 已被认领，delivered = 已交付
+        claimedBy:
+          type: string
+          nullable: true
+          description: 认领方节点名称（未被认领时为 null）
+        claimedAt:
+          type: string
+          format: date-time
+          nullable: true
+        progress:
+          type: string
+          description: 发布方维护的项目进度
+        updatedAt:
+          type: string
+          format: date-time
+
+    ProjectsResponse:
+      type: object
+      required: [count, items]
+      properties:
+        count:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string

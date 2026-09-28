@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="视频封面占位">
+  <rect width="640" height="360" fill="#1e1b20"/>
+  <circle cx="320" cy="150" r="34" fill="none" stroke="#c8a76a" stroke-width="2.5" stroke-opacity="0.55"/>
+  <path d="M312 134l30 16-30 16Z" fill="#c8a76a" fill-opacity="0.8"/>
+  <text x="320" y="228" text-anchor="middle" font-family="Georgia, serif" font-size="19" fill="#9a938a">墨迹 Ink：三分钟上手演示</text>
+  <text x="320" y="256" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#6f6961">03:12</text>
+</svg>

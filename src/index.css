@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* 深色模式由 html 上的 .dark 类控制（配合 index.html 中的初始主题脚本） */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * 语义化色彩令牌：主题切换只改变量，不改组件。
+ * 浅色 = 暖纸白；深色 = 暖黑。点缀色为低饱和暖金，刻意避开科技蓝。
+ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-status: var(--status);
+  --font-serif: "Georgia", "Times New Roman", "Songti SC", "Noto Serif SC", "SimSun", serif;
+}
+
+:root {
+  --bg: #faf9f7;
+  --surface: #ffffff;
+  --fg: #201e1b;
+  --muted: #6f6961;
+  --line: #e5e1da;
+  --accent: #8a6828;
+  --accent-soft: #f3ecdc;
+  --status: #33775a;
+}
+
+.dark {
+  --bg: #131312;
+  --surface: #1b1a19;
+  --fg: #e9e5dd;
+  --muted: #9a938a;
+  --line: #2b2927;
+  --accent: #c8a76a;
+  --accent-soft: #2c2820;
+  --status: #5ab386;
+}
+
+body {
+  @apply bg-bg text-fg antialiased;
+  font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  font-feature-settings: "tnum";
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+/* 键盘可达性：统一的焦点环，颜色随主题 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

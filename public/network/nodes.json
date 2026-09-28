@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "description": "联邦协作网络公共节点目录：任何部署本模板的站点都可以把本文件当作联盟入口参考。字段：name 节点名 / siteUrl 独立站 / apiUrl 开放项目接口（GET，返回联盟标准项目结构）/ claim 可认领方向 / tags 能力标签。规则：认领即连接，未认领不产生数据绑定。",
+  "updatedAt": "2026-09-29",
+  "nodes": [
+    {
+      "name": "示例节点",
+      "siteName": "示例节点的独立站",
+      "siteUrl": "https://example-node.com",
+      "apiUrl": "https://example-node.com/api/network/projects",
+      "claim": "可认领：工具类项目开发与自动化流程搭建",
+      "tags": ["全栈开发", "自动化", "小程序"]
+    }
+  ]
+}

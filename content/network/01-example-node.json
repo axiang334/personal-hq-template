@@ -1,0 +1,15 @@
+{
+  "name": "示例节点",
+  "role": "独立开发者 · 全栈与自动化",
+  "tags": [
+    "全栈开发",
+    "自动化",
+    "小程序"
+  ],
+  "siteName": "示例节点的独立站",
+  "siteUrl": "https://example-node.com",
+  "apiUrl": "https://your-domain.com/api/network/projects",
+  "avatar": "/uploads/member-a.svg",
+  "bio": "联盟演示节点（占位资料，替换为真实成员）：apiUrl 先填你自己的域名作自测——部署后这个节点能实时拉到你开放的项目，用来端到端测试「认领即连接」全流程。换成别人的 apiUrl，即可跨站拉取对方的项目。",
+  "claim": "可认领：工具类项目开发与自动化流程搭建"
+}

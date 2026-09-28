@@ -1,0 +1,249 @@
+{
+  "roles": [
+    {
+      "key": "owner",
+      "label": "发起端（我的视图）",
+      "desc": "所有项目、所有节点、所有交付、所有分佣、所有结算——全量台账，仅自己可见。"
+    },
+    {
+      "key": "client",
+      "label": "项目端（客户视图）",
+      "desc": "客户只看到自己项目的进度、交付结果与数据表现；看不到分佣规则、认领节点、内部成本。"
+    },
+    {
+      "key": "node",
+      "label": "认领端（节点视图）",
+      "desc": "节点看到可认领项目、自己认领的项目、自己的交付数据与分佣记录；看不到其他节点分佣与客户全貌。"
+    }
+  ],
+  "projectFields": [
+    {
+      "field": "name",
+      "label": "项目",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "accessKey",
+      "label": "项目 Key",
+      "roles": [
+        "owner"
+      ]
+    },
+    {
+      "field": "client",
+      "label": "客户",
+      "roles": [
+        "owner",
+        "client"
+      ]
+    },
+    {
+      "field": "status",
+      "label": "状态",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "progress",
+      "label": "进度",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "deliverables",
+      "label": "交付结果",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "metrics",
+      "label": "数据表现",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "node",
+      "label": "认领节点",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "commission",
+      "label": "分佣规则",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "cost",
+      "label": "内部成本",
+      "roles": [
+        "owner"
+      ]
+    },
+    {
+      "field": "settlement",
+      "label": "结算状态",
+      "roles": [
+        "owner"
+      ]
+    },
+    {
+      "field": "startDate",
+      "label": "开始时间",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "stage",
+      "label": "当前阶段",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "team",
+      "label": "认领情况",
+      "roles": [
+        "owner",
+        "client",
+        "node"
+      ]
+    },
+    {
+      "field": "billing",
+      "label": "结算状态（客户侧）",
+      "roles": [
+        "owner",
+        "client"
+      ]
+    }
+  ],
+  "nodeFields": [
+    {
+      "field": "name",
+      "label": "节点",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "direction",
+      "label": "认领方向",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "tags",
+      "label": "能力标签",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "projects",
+      "label": "参与项目",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "status",
+      "label": "协作状态",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "note",
+      "label": "内部备注",
+      "roles": [
+        "owner"
+      ]
+    }
+  ],
+  "settlementFields": [
+    {
+      "field": "project",
+      "label": "项目",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "node",
+      "label": "节点",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "type",
+      "label": "类型",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "amount",
+      "label": "金额",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "status",
+      "label": "状态",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    },
+    {
+      "field": "date",
+      "label": "月份",
+      "roles": [
+        "owner",
+        "node"
+      ]
+    }
+  ],
+  "rowRules": {
+    "client": "行级过滤：客户只看 clientKey 等于自己身份键的项目，且不出现结算台账。",
+    "node": "行级过滤：节点只看 nodeKey 等于自己身份键的项目与结算记录，外加 recruiting=true 的可认领项目。"
+  }
+}

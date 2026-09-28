@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /workspace
+
+# 面向大语言模型的站点说明
+llms.txt: https://your-domain.com/llms.txt

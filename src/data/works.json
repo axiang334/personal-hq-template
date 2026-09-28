@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "01-example-brand-a",
+    "title": "示例作品A · 品牌短视频获客体系（占位）",
+    "summary": "为示例客户A搭建短视频获客体系：内容方向、账号矩阵、投放策略与线索承接链路。占位示例：替换为你做过的真实项目。",
+    "category": "业务案例",
+    "year": "2026",
+    "status": "archived",
+    "statusText": "结案复盘",
+    "stack": [
+      "短视频获客",
+      "投放策略",
+      "线索承接"
+    ],
+    "highlight": true
+  },
+  {
+    "slug": "02-example-tool-b",
+    "title": "示例作品B · 获客工具 0-1（占位）",
+    "summary": "从需求到上线：一套服务本地商户的获客工具，覆盖前端录入、跟进与线索分发的最小闭环。占位示例：替换为你做过的真实项目。",
+    "category": "产品案例",
+    "year": "2026",
+    "status": "archived",
+    "statusText": "结案复盘",
+    "stack": [
+      "产品设计",
+      "独立开发",
+      "工具化"
+    ],
+    "highlight": false
+  }
+]

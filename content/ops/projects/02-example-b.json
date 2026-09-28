@@ -1,0 +1,29 @@
+{
+  "name": "示例项目B · 获客工具开发",
+  "client": "自营项目",
+  "clientKey": "self",
+  "status": "招募中",
+  "progress": "模式已跑通 0-1：工具原型验证完成，等待节点认领开发与渠道拓展。（占位台账，替换为真实项目）",
+  "deliverables": "获客工具前端（小程序或 H5）；首批 50 家种子商户试点触达。",
+  "metrics": [
+    {
+      "label": "商户触达",
+      "value": "目标 50 家（待填）"
+    },
+    {
+      "label": "有效留资",
+      "value": "目标 ≥ 10 家（待填）"
+    }
+  ],
+  "node": "——",
+  "commission": "基础开发费 + 成交商户分佣（按月结算，比例面谈）",
+  "cost": "——（占位）",
+  "settlement": "——",
+  "recruiting": true,
+  "nodeKey": "",
+  "accessKey": "exampleB2026",
+  "startDate": "2026-09",
+  "stage": "招募中 · 等待节点认领",
+  "team": [],
+  "billing": "自营项目，无客户结算环节。"
+}

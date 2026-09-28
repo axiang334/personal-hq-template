@@ -1,0 +1,38 @@
+{
+  "name": "示例项目A · 短视频内容获客",
+  "client": "示例客户A",
+  "clientKey": "client-a",
+  "status": "已交付",
+  "progress": "已交付并验收：账号矩阵、投放与线索承接链路已移交客户团队。（占位台账，替换为真实项目）",
+  "deliverables": "官方号矩阵内容体系；定向投放；线索承接链路；复盘 SOP 文档。",
+  "metrics": [
+    {
+      "label": "播放量",
+      "value": "——（待填）"
+    },
+    {
+      "label": "有效线索",
+      "value": "——（待填）"
+    },
+    {
+      "label": "单线索成本",
+      "value": "——（待填）"
+    }
+  ],
+  "node": "示例节点",
+  "commission": "服务费 + 效果佣金（按有效线索阶梯提成）",
+  "cost": "——（占位）",
+  "settlement": "已结算",
+  "recruiting": false,
+  "nodeKey": "member-a",
+  "accessKey": "exampleA2026",
+  "startDate": "2026-03",
+  "stage": "已交付 · 进入客户自运营陪伴期",
+  "team": [
+    {
+      "name": "示例节点",
+      "duty": "短视频内容制作与投放执行"
+    }
+  ],
+  "billing": "服务费已结清；效果佣金按季度核算（占位说明，替换为真实结算状态）。"
+}

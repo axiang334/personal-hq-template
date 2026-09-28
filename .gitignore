@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.env
+# Tina 生成产物（tina-lock.json 与 config.ts 需要提交）
+tina/__generated__/
